@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pigeon Pea Leaf Disease Detection</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Animated Background Elements -->
+    <div class="bg-animation">
+        <div class="floating-leaf leaf-1"></div>
+        <div class="floating-leaf leaf-2"></div>
+        <div class="floating-leaf leaf-3"></div>
+        <div class="floating-leaf leaf-4"></div>
+        <div class="floating-leaf leaf-5"></div>
+        <div class="floating-leaf leaf-6"></div>
+        <div class="floating-leaf leaf-7"></div>
+        <div class="floating-leaf leaf-8"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-seedling"></i>
+                <span>PigeonCare AI</span>
+            </div>
+            <div class="nav-links">
+                <a href="#" class="active">Home</a>
+                <a href="#upload-section">Detect</a>
+                <a href="#about">About</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <i class="fas fa-leaf"></i>
+                <span>SPM Project</span>
+            </div>
+            <h1 class="hero-title">
+                Pigeon Pea Leaf<br>
+                <span class="gradient-text">Disease Detection</span>
+            </h1>
+            <p class="hero-subtitle">
+                Advanced AI-powered disease classification using deep learning. 
+                Upload a pigeon pea leaf image to identify diseases instantly with medical-grade accuracy.
+            </p>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <div class="stat-number">4</div>
+                    <div class="stat-label">Disease Classes</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">224x224</div>
+                    <div class="stat-label">Input Resolution</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">CNN</div>
+                    <div class="stat-label">Deep Learning</div>
+                </div>
+            </div>
+            <a href="#upload-section" class="cta-button">
+                <i class="fas fa-microscope"></i>
+                Start Detection
+            </a>
+        </div>
+        <div class="hero-visual">
+            <div class="leaf-card">
+                <div class="leaf-glow"></div>
+                <i class="fas fa-leaf hero-icon"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- Upload Section -->
+    <section id="upload-section" class="upload-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    Upload Leaf Image
+                </h2>
+                <p class="section-subtitle">Drag and drop or browse to upload a pigeon pea leaf image</p>
+            </div>
+
+            <div class="upload-card glass-card">
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <h3>Drag & Drop Image Here</h3>
+                    <p>or</p>
+                    <label class="browse-btn">
+                        Browse Files
+                        <input type="file" id="fileInput" accept="image/*" hidden>
+                    </label>
+                    <p class="upload-hint">Supports: JPG, PNG, JPEG, WebP (Max 10MB)</p>
+                </div>
+
+                <div class="preview-container" id="previewContainer" style="display: none;">
+                    <div class="preview-header">
+                        <h3><i class="fas fa-image"></i> Image Preview</h3>
+                        <button class="remove-btn" id="removeBtn" title="Remove image">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="preview-image-wrapper">
+                        <img id="previewImage" src="" alt="Preview">
+                    </div>
+                    <div class="file-info" id="fileInfo"></div>
+                    <button class="detect-btn" id="detectBtn">
+                        <i class="fas fa-search"></i>
+                        Detect Disease
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="leaf-loader">
+                <div class="leaf-spin"></div>
+                <i class="fas fa-leaf"></i>
+            </div>
+            <h3 id="loadingText">Analyzing Leaf...</h3>
+            <p id="loadingSubtext">Our AI model is examining your pigeon pea leaf</p>
+            <div class="loading-progress">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Invalid Image Overlay -->
+    <div class="invalid-overlay" id="invalidOverlay">
+        <div class="invalid-content">
+            <div class="invalid-icon-wrapper">
+                <div class="invalid-icon-glow"></div>
+                <i class="fas fa-exclamation-triangle invalid-icon"></i>
+            </div>
+            <h2 class="invalid-title">Invalid Image</h2>
+            <p class="invalid-message">Please upload a Pigeon Pea leaf</p>
+            <p class="invalid-subtext">Our AI detected that the uploaded image is not a pigeon pea leaf. Please try again with a clear image of a pigeon pea leaf.</p>
+            <div class="invalid-actions">
+                <button class="try-again-btn" id="tryAgainBtn">
+                    <i class="fas fa-redo"></i>
+                    Try Again
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Section -->
+    <section id="results-section" class="results-section" style="display: none;">
+        <div class="container">
+            <div class="results-header">
+                <h2 class="section-title">
+                    <i class="fas fa-chart-line"></i>
+                    Analysis Results
+                </h2>
+                <button class="reset-btn" id="resetBtn">
+                    <i class="fas fa-redo"></i>
+                    New Analysis
+                </button>
+            </div>
+
+            <div class="results-grid">
+                <!-- Image & Prediction Card -->
+                <div class="result-card glass-card main-result">
+                    <div class="image-preview">
+                        <img id="resultImage" src="" alt="Analyzed Leaf">
+                        <div class="image-badge" id="imageBadge">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Analyzed</span>
+                        </div>
+                    </div>
+                    <div class="prediction-result">
+                        <div class="disease-icon" id="diseaseIcon">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <div class="disease-info">
+                            <span class="disease-label">Predicted Disease</span>
+                            <h2 class="disease-name" id="diseaseName">Loading...</h2>
+                            <div class="confidence-badge" id="confidenceBadge">
+                                <i class="fas fa-percentage"></i>
+                                <span id="confidenceValue">0%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Probability Chart Card -->
+                <div class="result-card glass-card chart-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-chart-bar"></i>
+                        Prediction Probabilities
+                    </h3>
+                    <div class="chart-container">
+                        <canvas id="probabilityChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Severity & Confidence Card -->
+                <div class="result-card glass-card severity-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-heartbeat"></i>
+                        Severity Assessment
+                    </h3>
+                    <div class="severity-display" id="severityDisplay">
+                        <div class="severity-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="severity-text">
+                            <span class="severity-label">Severity Level</span>
+                            <span class="severity-value" id="severityValue">Analyzing...</span>
+                        </div>
+                    </div>
+                    <div class="confidence-meter">
+                        <div class="meter-label">
+                            <span>Model Confidence</span>
+                            <span id="meterPercentage">0%</span>
+                        </div>
+                        <div class="meter-bar">
+                            <div class="meter-fill" id="meterFill" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Description Card -->
+                <div class="result-card glass-card description-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-info-circle"></i>
+                        Disease Description
+                    </h3>
+                    <p class="description-text" id="descriptionText">Loading description...</p>
+                </div>
+
+                <!-- Causes Card -->
+                <div class="result-card glass-card causes-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-exclamation-circle"></i>
+                        Causes
+                    </h3>
+                    <ul class="info-list" id="causesList">
+                        <li>Analyzing causes...</li>
+                    </ul>
+                </div>
+
+                <!-- Organic Treatment Card -->
+                <div class="result-card glass-card treatment-card organic-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-leaf"></i>
+                        Organic Treatment
+                    </h3>
+                    <p class="treatment-text" id="organicText">Loading treatment...</p>
+                </div>
+
+                <!-- Chemical Treatment Card -->
+                <div class="result-card glass-card treatment-card chemical-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-flask"></i>
+                        Chemical Treatment
+                    </h3>
+                    <p class="treatment-text" id="chemicalText">Loading treatment...</p>
+                </div>
+
+                <!-- Prevention Card -->
+                <div class="result-card glass-card prevention-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-shield-alt"></i>
+                        Prevention Methods
+                    </h3>
+                    <ul class="info-list" id="preventionList">
+                        <li>Loading prevention methods...</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-graduation-cap"></i>
+                    About This Project
+                </h2>
+            </div>
+            <div class="about-grid">
+                <div class="about-card glass-card">
+                    <div class="about-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Deep Learning Model</h3>
+                    <p>Built using TensorFlow/Keras with Convolutional Neural Networks (CNN) architecture. Trained on thousands of pigeon pea leaf images to achieve high accuracy in disease classification.</p>
+                </div>
+                <div class="about-card glass-card">
+                    <div class="about-icon">
+                        <i class="fas fa-laptop-code"></i>
+                    </div>
+                    <h3>Web Application</h3>
+                    <p>Developed with Python Flask backend and modern HTML/CSS/JavaScript frontend. Features real-time predictions, beautiful UI, and responsive design for all devices.</p>
+                </div>
+                <div class="about-card glass-card">
+                    <div class="about-icon">
+                        <i class="fas fa-microscope"></i>
+                    </div>
+                    <h3>Disease Classes</h3>
+                    <p>Classifies pigeon pea leaves into four categories: Healthy, Leaf Spot, Leaf Webber, and Sterilic Mosaic with confidence scores and severity levels.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <i class="fas fa-seedling"></i>
+                    <span>By: Aditya & Vivek</span>
+                </div>
+                <p class="footer-text">Pigeon Pea Leaf Disease Detection System</p>
+                <p class="footer-copy">SPM Project | Built with Flask & TensorFlow</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
