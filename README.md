@@ -10,7 +10,7 @@ A web-based AI application for detecting and classifying diseases in pigeon pea 
 - **Comprehensive Information**: Provides disease description, causes, organic and chemical treatments, and prevention methods
 - **Interactive Visualization**: Real-time confidence scores with probability charts using Chart.js
 - **Beautiful UI**: Modern nature-themed design with glass morphism effects and smooth animations
-- **Drag & Drop Upload**: Easy image upload with preview functionality
+- **Drag & Drop Upload**: Easy image upload with preview functionality.
 
 ## Tech Stack
 
